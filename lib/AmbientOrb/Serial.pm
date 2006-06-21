@@ -8,11 +8,11 @@ AmbientOrb::Serial - Perl module for interfacing with your Orb via serial port.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -316,6 +316,14 @@ sub color_to_ascii
     return $message;
 }
 
-
+sub DESTROY
+{
+    my ( $self ) = @_;
+    if ( defined $self->serial_port )
+    {
+	$self->serial_port->close() || warn "unable to close serial port!\n";
+	undef $self->serial_port;
+    }
+}
 
 1; # End of AmbientOrb::Serial
